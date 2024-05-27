@@ -1,15 +1,10 @@
-package org.example.patientservice.Model;
+package org.example.patientservice.Model.Entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.IdGeneratorType;
-import org.hibernate.annotations.UuidGenerator;
-import org.springframework.util.IdGenerator;
 
-import java.time.LocalDate;
-import java.util.Set;
+import java.util.Date;
 
 @Entity
 @Table(name="Patient")
@@ -31,5 +26,5 @@ public class Patient {
     @Setter
     @Getter
     @Column(name = "dob")
-    private LocalDate dob;
+    private Date dob;
 }

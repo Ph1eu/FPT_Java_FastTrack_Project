@@ -27,7 +27,7 @@ import java.util.Map;
  *
  */
 @Configuration
-@EnableBatchProcessing
+//@EnableBatchProcessing
 @EnableScheduling
 public class JobLauncherConfig {
 
@@ -61,17 +61,8 @@ public class JobLauncherConfig {
 
         try {
             LOGGER.info("Launch job Test report job Import Job ....");
-//
-//            if("All".equalsIgnoreCase(jobEnabledFor) || "EMPLOYEE".equalsIgnoreCase(jobEnabledFor)) {
-//                JobExecution empoyeeJobExecution = jobLauncher.run(empoyeeJob, parameters);
-//                LOGGER.info("empoyeeJobExecution job execution completed, status : {} " , empoyeeJobExecution.getExitStatus());
-//            }
-//
-//            if("All".equalsIgnoreCase(jobEnabledFor) || "ADDRESS".equalsIgnoreCase(jobEnabledFor)) {
-//                JobExecution addressJobExecution = jobLauncher.run(addressJob, parameters);
-//                LOGGER.info("addressJobExecution job execution completed, status : {} " , addressJobExecution.getExitStatus());
-//            }
-            JobExecution addressJobExecution = jobLauncher.run(testReportJob, parameters);
+
+            JobExecution testReportJobExec   = jobLauncher.run(testReportJob, parameters);
 
 
             LOGGER.info("All job execution completed, status : {} ",

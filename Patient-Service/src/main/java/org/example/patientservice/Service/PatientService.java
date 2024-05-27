@@ -1,26 +1,15 @@
 package org.example.patientservice.Service;
 
-import org.example.patientservice.Model.Patient;
-import org.example.patientservice.Repository.PatientRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.example.patientservice.Model.Dto.PatientCreateDto;
+import org.example.patientservice.Model.Dto.PatientFilterDto;
+import org.example.patientservice.Model.Dto.PatientPageDto;
+import org.example.patientservice.Model.Dto.PatientUpdateDto;
+import org.example.patientservice.Model.Entity.Patient;
 
-import java.util.List;
-import java.util.Optional;
+public interface PatientService {
+    Patient getById(String id);
+    Patient create(PatientCreateDto dto);
+    Patient update(String id, PatientUpdateDto dto);
 
-@Service
-public class PatientService {
-
-  @Autowired
-  private PatientRepository patientRepository;
-
-  public Optional<Patient> getPatientDetails(String id) {
-    return patientRepository.findById(id);
-  }
-  public Patient createPatient(Patient patient) {
-    return patientRepository.save(patient);
-  }
-  public List<Patient> getAllPatient() {
-    return patientRepository.findAll();
-  }
+    PatientPageDto list(PatientFilterDto dto);
 }

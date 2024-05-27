@@ -15,7 +15,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 import javax.sql.DataSource;
 
 @Configuration
-@EnableBatchProcessing
+//@EnableBatchProcessing
 public class ApplicationBatchConfig
 {
 
@@ -42,9 +42,9 @@ public class ApplicationBatchConfig
         JobRepositoryFactoryBean factory = new JobRepositoryFactoryBean();
         factory.setDataSource(dataSource);
         factory.setTransactionManager(transactionManager);
-        factory.setIsolationLevelForCreate("ISOLATION_READ_UNCOMMITTED");
+       // factory.setIsolationLevelForCreate("ISOLATION_READ_UNCOMMITTED");
         factory.setTablePrefix("BATCH_");
-        //factory.setDatabaseType(DatabaseType.H2.toString());
+        factory.setDatabaseType(DatabaseType.H2.toString());
         // factory.setMaxVarCharLength(1000);
         try
         {
