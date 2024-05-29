@@ -29,12 +29,21 @@ public class PatientController {
             return ResponseEntity.notFound().build();
         }
     }
-    @RequestMapping(method = RequestMethod.POST,value = "/list")
-    public ResponseEntity<Object> listPatients(@RequestBody PatientRequestFilterDto requestFilterDto,@RequestParam("page" ) int page,@RequestParam("size") int size){
-        PatientFilterDto filterDto = mapper.PatientRequestFilterDtoToPatientFilterDto(requestFilterDto);
-        filterDto.setSize(size);
-        filterDto.setPage(page);
-        return ResponseEntity.ok(patientServiceImpl.list(filterDto));
+    @RequestMapping(method = RequestMethod.GET,value = "/list")
+    public ResponseEntity<Object> listPatients(@RequestBody(required = false) PatientRequestFilterDto requestFilterDto,@RequestParam(value = "page",defaultValue = "0") int page,@RequestParam(value = "size",defaultValue = "5") int size){
+        PatientFilterDto filterDto;
+        if(requestFilterDto != null) {
+             filterDto = mapper.PatientRequestFilterDtoToPatientFilterDto(requestFilterDto);
+            filterDto.setSize(size);
+            filterDto.setPage(page);
+            return ResponseEntity.ok(patientServiceImpl.list(filterDto));
+        }
+        else{
+            filterDto = new PatientFilterDto();
+            filterDto.setSize(size);
+            filterDto.setPage(page);
+            return ResponseEntity.ok(patientServiceImpl.list(filterDto));
+        }
     }
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<Object> createPatient(@RequestBody PatientCreateDto patientCreateDto){

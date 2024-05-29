@@ -1,4 +1,4 @@
-package org.example.reportservice.Payload.Response;
+package org.example.reportservice.Model.Payload.Response;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Id;

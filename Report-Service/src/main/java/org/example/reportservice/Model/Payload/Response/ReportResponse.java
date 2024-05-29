@@ -1,4 +1,4 @@
-package org.example.reportservice.Payload.Response;
+package org.example.reportservice.Model.Payload.Response;
 
 import lombok.Data;
 import org.example.reportservice.Model.entity.TestReport;

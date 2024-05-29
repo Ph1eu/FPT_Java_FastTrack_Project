@@ -9,10 +9,10 @@ import java.util.Date;
 
 public interface PatientRepository extends JpaRepository<Patient, String>, JpaSpecificationExecutor<Patient> {
     static Specification<Patient> hasFirstName(String firstName) {
-        return (root, query, builder) -> builder.equal(root.get("firstName"), firstName);
+        return (root, query, builder) -> builder.equal(root.get("first_name"), firstName);
     }
      static Specification<Patient> hasLastName(String lastName) {
-        return (root, query, builder) -> builder.equal(root.get("lastName"), lastName);
+        return (root, query, builder) -> builder.equal(root.get("last_name"), lastName);
     }
     static Specification<Patient> hasDob(Date date) {
         return (root, query, builder) -> builder.equal(root.get("dob"), date);

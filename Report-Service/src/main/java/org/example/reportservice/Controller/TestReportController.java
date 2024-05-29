@@ -2,10 +2,10 @@ package org.example.reportservice.Controller;
 
 import org.example.reportservice.Model.Enum.TestStatus;
 import org.example.reportservice.Model.entity.TestReport;
-import org.example.reportservice.Payload.Request.TestResult;
-import org.example.reportservice.Payload.Response.Patient;
-import org.example.reportservice.Payload.Response.ReportResponse;
-import org.example.reportservice.Service.TestReportService;
+import org.example.reportservice.Model.Payload.Request.TestResult;
+import org.example.reportservice.Model.Payload.Response.Patient;
+import org.example.reportservice.Model.Payload.Response.ReportResponse;
+import org.example.reportservice.Service.impl.TestReportServiceImpl;
 //import org.example.reportservice.feign.PatientClient;
 import org.example.reportservice.feign.PatientClient;
 import org.example.reportservice.mqtt.MqttPublisherService;
@@ -21,7 +21,7 @@ import java.util.Optional;
 public class TestReportController {
 
     @Autowired
-    private TestReportService testReportService;
+    private TestReportServiceImpl testReportServiceImpl;
     @Autowired
     private MqttPublisherService mqttPublisherService;
     @Autowired
@@ -32,7 +32,7 @@ public class TestReportController {
 
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<ReportResponse> getReportById(@RequestParam("id") String id){
-        Optional<TestReport> report = testReportService.getTestReportById(id);
+        Optional<TestReport> report = testReportServiceImpl.getTestReportById(id);
         if(report.isPresent()){
             Patient patient =patientClient.getPatient(report.get().getPatientId());
             ReportResponse reportResponse = new ReportResponse();
@@ -48,7 +48,7 @@ public class TestReportController {
 
     @RequestMapping(method = RequestMethod.GET,value = "/patient")
     public ResponseEntity<ReportResponse> getReportByPatientId(@RequestParam("id") String id){
-        List<TestReport> report = testReportService.getTestReportByPatientId(id);
+        List<TestReport> report = testReportServiceImpl.getTestReportByPatientId(id);
         if(!report.isEmpty()){
             Patient patient =patientClient.getPatient(id);
             ReportResponse reportResponse = new ReportResponse();
@@ -67,7 +67,7 @@ public class TestReportController {
      */
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<TestReport> createReport(@RequestBody TestReport testReport){
-        return ResponseEntity.ok(testReportService.saveTestReport(testReport));
+        return ResponseEntity.ok(testReportServiceImpl.saveTestReport(testReport));
     }
 
     /**
@@ -79,13 +79,13 @@ public class TestReportController {
      */
     @RequestMapping(method = RequestMethod.POST,value = "/complete")
     public ResponseEntity<Object> changeReportStatusToComplete(@RequestParam("id") String id, @RequestBody TestResult testResult){
-        Optional<TestReport> testReportOptional = testReportService.getTestReportById(id);
+        Optional<TestReport> testReportOptional = testReportServiceImpl.getTestReportById(id);
         if (testReportOptional.isPresent()){
             TestReport testReport = testReportOptional.get();
             if(testReport.getStatus() == TestStatus.COMPLETED){
                 return ResponseEntity.ok("report hash already completed");
             }
-            testReportService.changeReportStatusToCompleted(id,testResult);
+            testReportServiceImpl.changeReportStatusToCompleted(id,testResult);
             String patient_id = testReport.getPatientId();
             String messageString = patient_id + ": " + id;
             mqttPublisherService.publish("report/completed", messageString);

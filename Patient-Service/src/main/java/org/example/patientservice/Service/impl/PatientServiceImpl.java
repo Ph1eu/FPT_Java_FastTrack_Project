@@ -17,6 +17,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
+import java.util.Optional;
 
 import static org.example.patientservice.Utils.ObjectUtils.getNullPropertyNames;
 
@@ -48,9 +49,10 @@ public class PatientServiceImpl implements PatientService {
 
   @Override
   public PatientPageDto list(PatientFilterDto dto) {
-    Specification<Patient> spec = Specification.where(PatientRepository.hasFirstName(dto.getFirst_name()))
-            .and(PatientRepository.hasLastName(dto.getLast_name()))
-            .and(PatientRepository.hasDob(Date.valueOf(dto.getDob())));
+    Specification<Patient> spec = Specification.where(null);
+    spec = spec.and(Optional.ofNullable(dto.getFirst_name()).map(PatientRepository::hasFirstName).orElse(null));
+    spec = spec.and(Optional.ofNullable(dto.getLast_name()).map(PatientRepository::hasLastName).orElse(null));
+    spec = spec.and(Optional.ofNullable(dto.getDob()).map(dob -> PatientRepository.hasDob(Date.valueOf(dob))).orElse(null));
     Pageable pageable = Pageable.ofSize(dto.getSize());
     Page<Patient> patients= patientRepository.findAll(spec, pageable);
     return new PatientPageDto(patients.getTotalElements(),patients.getTotalPages(),patients.getContent());

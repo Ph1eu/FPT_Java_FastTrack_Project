@@ -9,7 +9,6 @@ import org.example.reportservice.Model.Enum.TestStatus;
 
 import java.util.Date;
 @Data
-@AllArgsConstructor
 public class TestReportDto {
     private String id;
     private String patientId;
